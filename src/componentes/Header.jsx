@@ -32,20 +32,23 @@ function Header({ busqueda = "", onBuscar }) {
             </span>
           </Link>
 
-          <nav className="main" id="nav" aria-label="Navegación principal">
-            <NavLink to="/" end className={({ isActive }) => (isActive ? "on" : undefined)}>
-              Inicio
-            </NavLink>
-            <NavLink to="/coleccion" className={({ isActive }) => (isActive ? "on" : undefined)}>
-              Colección
-            </NavLink>
-            <NavLink to="/contacto" className={({ isActive }) => (isActive ? "on" : undefined)}>
-              Contacto
-            </NavLink>
-            <NavLink to="/login" className={({ isActive }) => (isActive ? "on" : undefined)}>
-              Acceso Clientes
-            </NavLink>
-          </nav>
+      <nav className="main" id="nav" aria-label="Navegación principal">
+                  <NavLink to="/" end className={({ isActive }) => (isActive ? "on" : undefined)}>
+                    Inicio
+                  </NavLink>
+                  <NavLink to="/coleccion" className={({ isActive }) => (isActive ? "on" : undefined)}>
+                    Colección
+                  </NavLink>
+                  <NavLink to="/contacto" className={({ isActive }) => (isActive ? "on" : undefined)}>
+                    Contacto
+                  </NavLink>
+                  <NavLink to="/login" className={({ isActive }) => (isActive ? "on" : undefined)}>
+                    Acceso Clientes
+                  </NavLink>
+                  <NavLink to="/admin" className={({ isActive }) => (isActive ? "on" : undefined)}>
+                    Admin CRUD
+                  </NavLink>
+                </nav>
 
           <div className="tools">
             <label className="search">

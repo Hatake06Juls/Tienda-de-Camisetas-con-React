@@ -4,6 +4,7 @@ import DrawerCarrito from "./componentes/DrawerCarrito";
 import MainHome from "./componentes/home/MainHome";
 import MainColeccion from "./componentes/coleccion/MainColeccion";
 import MainContacto from "./componentes/contacto/MainContacto";
+import MainAdmin from "./componentes/admin/MainAdmin";
 import HeaderLogin from "./componentes/login/HeaderLogin";
 import MainLogin from "./componentes/login/MainLogin";
 import MainRegistro from "./componentes/registro/MainRegistro";
@@ -26,6 +27,7 @@ function App() {
         <Route path="/" element={<MainHome />} />
         <Route path="/coleccion" element={<MainColeccion />} />
         <Route path="/contacto" element={<MainContacto />} />
+        <Route path="/admin" element={<MainAdmin />} />
 
         <Route
           path="/login"

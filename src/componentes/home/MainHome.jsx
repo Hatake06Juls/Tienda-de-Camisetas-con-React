@@ -1,11 +1,13 @@
+import { useEffect, useState } from "react";
 import "../coleccion/Coleccion.css";
 import "./Home.css";
 import Header from "../Header";
 import Catalogo from "../Catalogo";
 import FooterTienda from "../FooterTienda";
 import { useCarrito } from "../../context/useCarrito";
+import api from "../../servicios/api";
 
-const DESTACADOS_HOME = [
+const DESTACADOS_RESPALDO = [
   {
     id: 1,
     tallas: "S,M,L,XL",
@@ -58,6 +60,36 @@ const DESTACADOS_HOME = [
 
 function MainHome() {
   const { agregarAlCarrito } = useCarrito();
+  const [destacados, setDestacados] = useState(DESTACADOS_RESPALDO);
+
+  useEffect(() => {
+    api
+      .get("/productos")
+      .then((res) => {
+        if (Array.isArray(res.data) && res.data.length > 0) {
+          const adaptados = res.data.slice(0, 3).map((p) => ({
+            id: p.id_producto,
+            tallas: p.tallas || "S,M,L,XL",
+            color: p.color || "gris",
+            badge: p.badge || "Drop 04",
+            badgeClass: p.badgeClass || "",
+            gsm: p.gsm || "280 GSM",
+            img: p.img || "/img/img 1 acdc.jpg",
+            alt: p.alt || p.nombre,
+            sku: p.sku || `SKU: KLT-04-${p.id_producto}`,
+            fit: p.fit || "Oversized",
+            nombre: p.nombre,
+            precioNum: Number(p.precio) || 0,
+            precioTexto: `$${(Number(p.precio) || 0).toLocaleString("es-CO")} COP`,
+            tallasDisp: p.tallasDisp || "S M L XL",
+          }));
+          setDestacados(adaptados);
+        }
+      })
+      .catch((err) => {
+        console.warn("Usando destacados locales:", err.message);
+      });
+  }, []);
 
   return (
     <>
@@ -134,7 +166,7 @@ function MainHome() {
             </div>
           </div>
 
-          <Catalogo productos={DESTACADOS_HOME} onAgregar={agregarAlCarrito} />
+          <Catalogo productos={destacados} onAgregar={agregarAlCarrito} />
         </div>
       </section>
 

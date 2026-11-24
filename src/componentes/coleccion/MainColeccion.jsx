@@ -1,12 +1,14 @@
+import { useState } from "react";
 import "./Coleccion.css";
 import Header from "../Header";
 import Catalogo from "../Catalogo";
 import FooterTienda from "../FooterTienda";
+import { useCarrito } from "../../context/useCarrito";
 
 const PRODUCTOS_COLECCION = [
   {
     id: 1,
-    tallas: "S",
+    tallas: "S,M,L,XL",
     color: "gris",
     badge: "Popular",
     badgeClass: "hot",
@@ -22,7 +24,7 @@ const PRODUCTOS_COLECCION = [
   },
   {
     id: 2,
-    tallas: "M",
+    tallas: "M,L,XL",
     color: "blanco",
     badge: "Limitado",
     badgeClass: "ltd",
@@ -38,7 +40,7 @@ const PRODUCTOS_COLECCION = [
   },
   {
     id: 3,
-    tallas: "L",
+    tallas: "S,M,L,XL",
     color: "rojo",
     badge: "Heavy slab",
     badgeClass: "",
@@ -54,7 +56,7 @@ const PRODUCTOS_COLECCION = [
   },
   {
     id: 4,
-    tallas: "S,M,L",
+    tallas: "S,M,L,XXL",
     color: "azul",
     badge: "Horma over",
     badgeClass: "",
@@ -71,13 +73,30 @@ const PRODUCTOS_COLECCION = [
 ];
 
 function MainColeccion() {
-  const manejarAgregar = (prenda) => {
-    console.log("Agregado:", prenda);
-  };
+  const { agregarAlCarrito } = useCarrito();
+  const [tallaActiva, setTallaActiva] = useState("todos");
+  const [colorActivo, setColorActivo] = useState("todos");
+  const [orden, setOrden] = useState("recientes");
+  const [busqueda, setBusqueda] = useState("");
+
+  const productosFiltrados = PRODUCTOS_COLECCION.filter((item) => {
+    const coincideTalla =
+      tallaActiva === "todos" || item.tallas.split(",").includes(tallaActiva);
+    const coincideColor =
+      colorActivo === "todos" || item.color === colorActivo;
+    const coincideBusqueda =
+      item.nombre.toLowerCase().includes(busqueda.toLowerCase()) ||
+      item.sku.toLowerCase().includes(busqueda.toLowerCase());
+    return coincideTalla && coincideColor && coincideBusqueda;
+  }).sort((a, b) => {
+    if (orden === "menor") return a.precioNum - b.precioNum;
+    if (orden === "mayor") return b.precioNum - a.precioNum;
+    return a.id - b.id;
+  });
 
   return (
     <>
-      <Header cantidadCarrito="00" totalTexto="$0 COP" />
+      <Header busqueda={busqueda} onBuscar={setBusqueda} />
 
       <section className="phead" id="catalogo">
         <div className="wrap">
@@ -88,65 +107,49 @@ function MainColeccion() {
             </div>
             <div className="ctrl">
               <div className="mono">
-                Catálogo activo: <b>24 productos disponibles</b>
+                Mostrando: <b>{productosFiltrados.length} productos</b>
               </div>
               <label className="mono">
                 Ordenar:
-                <select aria-label="Ordenar productos" defaultValue="Más recientes">
-                  <option value="Más recientes">Más recientes</option>
-                  <option value="Precio: menor a mayor">Precio: menor a mayor</option>
-                  <option value="Precio: mayor a menor">Precio: mayor a menor</option>
-                  <option value="Más vendidos">Más vendidos</option>
+                <select
+                  aria-label="Ordenar productos"
+                  value={orden}
+                  onChange={(e) => setOrden(e.target.value)}
+                >
+                  <option value="recientes">Más recientes</option>
+                  <option value="menor">Precio: menor a mayor</option>
+                  <option value="mayor">Precio: mayor a menor</option>
                 </select>
               </label>
             </div>
           </div>
         </div>
-        <div className="strip mono">
-          <div className="wrap">
-            <span>
-              <span className="a">Algodón orgánico peinado</span> &nbsp;•&nbsp; Serigrafía de alta
-              densidad &nbsp;•&nbsp; Corte arquitectónico caído
-            </span>
-            <span>
-              Producción limitada: <b>150 uds / modelo</b>
-            </span>
-          </div>
-        </div>
       </section>
 
       <main className="wrap" style={{ maxWidth: "1200px", margin: "0 auto", padding: "20px" }}>
-        <div className="active mono" style={{ marginBottom: "20px" }}>
-          <span>Filtros activos:</span>
-          <button type="button" className="l">
-            Tallas: S, M, L ×
-          </button>
-        </div>
-
-        <div className="filtros-container" id="filtros-tallas" style={{ marginBottom: "30px", textAlign: "center" }}>
-          <p className="mono" style={{ color: "var(--muted)", marginBottom: "12px" }}>
+        <div className="filtros-container" style={{ marginBottom: "24px", textAlign: "center" }}>
+          <p className="mono" style={{ color: "var(--muted)", marginBottom: "10px" }}>
             [ FILTRAR POR TALLA ]
           </p>
-          <div
-            className="tallas-grupo"
-            style={{ display: "flex", justifyContent: "center", gap: "10px", flexWrap: "wrap" }}
-          >
+          <div style={{ display: "flex", justifyContent: "center", gap: "10px", flexWrap: "wrap" }}>
             {["todos", "S", "M", "L", "XL"].map((talla) => (
-              <button key={talla} type="button" className="filtro-talla btn dark" data-talla={talla}>
+              <button
+                key={talla}
+                type="button"
+                className={`btn ${tallaActiva === talla ? "lime" : "dark"}`}
+                onClick={() => setTallaActiva(talla)}
+              >
                 {talla === "todos" ? "Todos" : talla}
               </button>
             ))}
           </div>
         </div>
 
-        <div className="filtros-container" id="filtros-colores" style={{ marginBottom: "30px", textAlign: "center" }}>
-          <p className="mono" style={{ color: "var(--muted)", marginBottom: "12px" }}>
+        <div className="filtros-container" style={{ marginBottom: "30px", textAlign: "center" }}>
+          <p className="mono" style={{ color: "var(--muted)", marginBottom: "10px" }}>
             [ FILTRAR POR PIGMENTO / COLOR ]
           </p>
-          <div
-            className="colores-grupo"
-            style={{ display: "flex", justifyContent: "center", gap: "10px", flexWrap: "wrap" }}
-          >
+          <div style={{ display: "flex", justifyContent: "center", gap: "10px", flexWrap: "wrap" }}>
             {[
               { id: "todos", label: "Todos" },
               { id: "gris", label: "Gris" },
@@ -154,61 +157,26 @@ function MainColeccion() {
               { id: "rojo", label: "Rojo" },
               { id: "azul", label: "Azul" },
             ].map((col) => (
-              <button key={col.id} type="button" className="filtro-color btn dark" data-color={col.id}>
+              <button
+                key={col.id}
+                type="button"
+                className={`btn ${colorActivo === col.id ? "lime" : "dark"}`}
+                onClick={() => setColorActivo(col.id)}
+              >
                 {col.label}
               </button>
             ))}
           </div>
         </div>
 
-        <Catalogo productos={PRODUCTOS_COLECCION} onAgregar={manejarAgregar} />
-
-        <div className="more mono">
-          <span>
-            Mostrando 4 de 24 productos disponibles • <b>17% completado</b>
-          </span>
-          <div className="bar">
-            <i style={{ width: "17%" }} />
-          </div>
-          <button className="btn dark" type="button">
-            Cargar más camisetas ⌄
-          </button>
-          <span style={{ fontSize: ".6rem" }}>
-            Sistema de despacho inmediato // Disponibilidad en tiempo real
-          </span>
-        </div>
+        {productosFiltrados.length > 0 ? (
+          <Catalogo productos={productosFiltrados} onAgregar={agregarAlCarrito} />
+        ) : (
+          <p className="mono" style={{ textAlign: "center", padding: "40px 0" }}>
+            No hay prendas que coincidan con esos filtros.
+          </p>
+        )}
       </main>
-
-      <div className="wrap">
-        <div className="specs">
-          <article className="spec">
-            <small className="mono">[Especificación 01]</small>
-            <h3>Algodón 100% orgánico</h3>
-            <p>
-              Tejido tubular de punto grueso hilado en anillos con acabado pre-encogido para garantizar
-              que las dimensiones originales se mantengan idénticas.
-            </p>
-          </article>
-
-          <article className="spec">
-            <small className="mono">[Especificación 02]</small>
-            <h3>Serigrafía puff &amp; plastisol</h3>
-            <p>
-              Proceso manual de serigrafía en talleres de Bogotá y Medellín. Tintas ecológicas con
-              relieve 3D arquitectónico.
-            </p>
-          </article>
-
-          <article className="spec">
-            <small className="mono">[Especificación 03]</small>
-            <h3>Corte oversized real</h3>
-            <p>
-              Patrones no basados en agrandar tallas estándar. Silueta cuadrada boxy construida desde cero
-              con hombros desplazados y cuello cerrado no deformable.
-            </p>
-          </article>
-        </div>
-      </div>
 
       <FooterTienda />
     </>

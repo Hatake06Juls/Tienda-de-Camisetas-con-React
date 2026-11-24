@@ -3,6 +3,7 @@ import "./Home.css";
 import Header from "../Header";
 import Catalogo from "../Catalogo";
 import FooterTienda from "../FooterTienda";
+import { useCarrito } from "../../context/useCarrito";
 
 const DESTACADOS_HOME = [
   {
@@ -56,13 +57,11 @@ const DESTACADOS_HOME = [
 ];
 
 function MainHome() {
-  const manejarAgregar = (prenda) => {
-    console.log("Agregado desde Home:", prenda);
-  };
+  const { agregarAlCarrito } = useCarrito();
 
   return (
     <>
-      <Header cantidadCarrito="00" totalTexto="$0 COP" />
+      <Header />
 
       <section className="hero" id="top">
         <div className="wrap hero-grid">
@@ -135,7 +134,7 @@ function MainHome() {
             </div>
           </div>
 
-          <Catalogo productos={DESTACADOS_HOME} onAgregar={manejarAgregar} />
+          <Catalogo productos={DESTACADOS_HOME} onAgregar={agregarAlCarrito} />
         </div>
       </section>
 

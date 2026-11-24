@@ -1,4 +1,6 @@
 import { Routes, Route, Navigate } from "react-router-dom";
+import { CarritoProvider } from "./context/CarritoContext";
+import DrawerCarrito from "./componentes/DrawerCarrito";
 import MainHome from "./componentes/home/MainHome";
 import MainColeccion from "./componentes/coleccion/MainColeccion";
 import MainContacto from "./componentes/contacto/MainContacto";
@@ -18,41 +20,41 @@ function LayoutAuth({ children }) {
 
 function App() {
   return (
-    <Routes>
-      {/* Rutas principales de la tienda */}
-      <Route path="/" element={<MainHome />} />
-      <Route path="/coleccion" element={<MainColeccion />} />
-      <Route path="/contacto" element={<MainContacto />} />
+    <CarritoProvider>
+      <DrawerCarrito />
+      <Routes>
+        <Route path="/" element={<MainHome />} />
+        <Route path="/coleccion" element={<MainColeccion />} />
+        <Route path="/contacto" element={<MainContacto />} />
 
-      {/* Rutas de autenticación */}
-      <Route
-        path="/login"
-        element={
-          <LayoutAuth>
-            <MainLogin />
-          </LayoutAuth>
-        }
-      />
-      <Route
-        path="/registro"
-        element={
-          <LayoutAuth>
-            <MainRegistro />
-          </LayoutAuth>
-        }
-      />
-      <Route
-        path="/recuperar"
-        element={
-          <LayoutAuth>
-            <MainRecuperar />
-          </LayoutAuth>
-        }
-      />
+        <Route
+          path="/login"
+          element={
+            <LayoutAuth>
+              <MainLogin />
+            </LayoutAuth>
+          }
+        />
+        <Route
+          path="/registro"
+          element={
+            <LayoutAuth>
+              <MainRegistro />
+            </LayoutAuth>
+          }
+        />
+        <Route
+          path="/recuperar"
+          element={
+            <LayoutAuth>
+              <MainRecuperar />
+            </LayoutAuth>
+          }
+        />
 
-      {/* Ruta comodín por si escriben una URL que no existe */}
-      <Route path="*" element={<Navigate to="/" replace />} />
-    </Routes>
+        <Route path="*" element={<Navigate to="/" replace />} />
+      </Routes>
+    </CarritoProvider>
   );
 }
 

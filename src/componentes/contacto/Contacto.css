@@ -1,0 +1,60 @@
+/* ==========================================================================
+   KULT STUDIO · MÓDULO CONTACTO
+   ========================================================================== */
+
+.contact-sec {
+  padding-block: clamp(40px, 6vw, 72px);
+}
+
+.contact-grid {
+  display: grid;
+  grid-template-columns: 1.15fr 0.85fr;
+  gap: 32px;
+  align-items: start;
+}
+
+.contact-card {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  padding: clamp(22px, 3vw, 36px);
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.contact-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.info-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.info-box {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  padding: 20px 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.info-box small {
+  color: var(--lime);
+}
+
+.info-box p {
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+@media (max-width: 860px) {
+  .contact-grid,
+  .contact-row {
+    grid-template-columns: 1fr;
+  }
+}

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { Routes, Route, Navigate } from "react-router-dom";
 import MainHome from "./componentes/home/MainHome";
 import MainColeccion from "./componentes/coleccion/MainColeccion";
 import MainContacto from "./componentes/contacto/MainContacto";
@@ -7,24 +7,52 @@ import MainLogin from "./componentes/login/MainLogin";
 import MainRegistro from "./componentes/registro/MainRegistro";
 import MainRecuperar from "./componentes/recuperar/MainRecuperar";
 
-function App() {
-  const [vista, setVista] = useState("home");
-
+function LayoutAuth({ children }) {
   return (
     <>
-      {vista === "home" && <MainHome onNavegar={setVista} />}
-      {vista === "coleccion" && <MainColeccion onNavegar={setVista} />}
-      {vista === "contacto" && <MainContacto onNavegar={setVista} />}
-
-      {(vista === "login" || vista === "registro" || vista === "recuperar") && (
-        <>
-          <HeaderLogin onNavegar={setVista} />
-          {vista === "login" && <MainLogin onNavegar={setVista} />}
-          {vista === "registro" && <MainRegistro onNavegar={setVista} />}
-          {vista === "recuperar" && <MainRecuperar onNavegar={setVista} />}
-        </>
-      )}
+      <HeaderLogin />
+      {children}
     </>
+  );
+}
+
+function App() {
+  return (
+    <Routes>
+      {/* Rutas principales de la tienda */}
+      <Route path="/" element={<MainHome />} />
+      <Route path="/coleccion" element={<MainColeccion />} />
+      <Route path="/contacto" element={<MainContacto />} />
+
+      {/* Rutas de autenticación */}
+      <Route
+        path="/login"
+        element={
+          <LayoutAuth>
+            <MainLogin />
+          </LayoutAuth>
+        }
+      />
+      <Route
+        path="/registro"
+        element={
+          <LayoutAuth>
+            <MainRegistro />
+          </LayoutAuth>
+        }
+      />
+      <Route
+        path="/recuperar"
+        element={
+          <LayoutAuth>
+            <MainRecuperar />
+          </LayoutAuth>
+        }
+      />
+
+      {/* Ruta comodín por si escriben una URL que no existe */}
+      <Route path="*" element={<Navigate to="/" replace />} />
+    </Routes>
   );
 }
 

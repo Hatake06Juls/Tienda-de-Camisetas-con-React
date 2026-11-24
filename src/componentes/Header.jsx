@@ -1,16 +1,6 @@
-function Header({
-  paginaActiva = "coleccion",
-  cantidadCarrito = "00",
-  totalTexto = "$0 COP",
-  onNavegar,
-}) {
-  const irA = (e, vista) => {
-    if (onNavegar) {
-      e.preventDefault();
-      onNavegar(vista);
-    }
-  };
+import { Link, NavLink } from "react-router-dom";
 
+function Header({ cantidadCarrito = "00", totalTexto = "$0 COP" }) {
   return (
     <>
       <div className="ticker mono">
@@ -29,7 +19,7 @@ function Header({
 
       <header className="site">
         <div className="wrap">
-          <a className="brand" href="#inicio" onClick={(e) => irA(e, "home")}>
+          <Link className="brand" to="/">
             <span className="logo" aria-hidden="true">
               KULT
             </span>
@@ -37,33 +27,21 @@ function Header({
               <b>KULT</b>
               <small>Studio // Lab</small>
             </span>
-          </a>
+          </Link>
 
           <nav className="main" id="nav" aria-label="Navegación principal">
-            <a
-              href="#inicio"
-              className={paginaActiva === "inicio" ? "on" : undefined}
-              onClick={(e) => irA(e, "home")}
-            >
+            <NavLink to="/" end className={({ isActive }) => (isActive ? "on" : undefined)}>
               Inicio
-            </a>
-            <a
-              href="#catalogo"
-              className={paginaActiva === "coleccion" ? "on" : undefined}
-              onClick={(e) => irA(e, "coleccion")}
-            >
+            </NavLink>
+            <NavLink to="/coleccion" className={({ isActive }) => (isActive ? "on" : undefined)}>
               Colección
-            </a>
-            <a
-              href="#contacto"
-              className={paginaActiva === "contacto" ? "on" : undefined}
-              onClick={(e) => irA(e, "contacto")}
-            >
+            </NavLink>
+            <NavLink to="/contacto" className={({ isActive }) => (isActive ? "on" : undefined)}>
               Contacto
-            </a>
-            <a href="#login" onClick={(e) => irA(e, "login")}>
+            </NavLink>
+            <NavLink to="/login" className={({ isActive }) => (isActive ? "on" : undefined)}>
               Acceso Clientes
-            </a>
+            </NavLink>
           </nav>
 
           <div className="tools">
@@ -100,7 +78,7 @@ function Header({
               <i>0</i>
             </button>
 
-            <a className="cart" href="#carrito-panel" aria-label="Carrito de compras">
+            <Link className="cart" to="/coleccion" aria-label="Carrito de compras">
               <svg
                 width="14"
                 height="14"
@@ -123,7 +101,7 @@ function Header({
               >
                 {totalTexto}
               </span>
-            </a>
+            </Link>
 
             <button
               className="burger"

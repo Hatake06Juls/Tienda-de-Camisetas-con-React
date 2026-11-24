@@ -27,7 +27,7 @@ const PRODUCTOS_COLECCION = [
     badge: "Limitado",
     badgeClass: "ltd",
     gsm: "280 GSM",
-    img: "/img/img 2 def leppard.jpg", // <-- Verifica que coincida exactamente con el nombre de tu archivo en public/img/
+    img: "/img/img 2 def leppard.jpg",
     alt: "Camiseta Def Leppard",
     sku: "SKU: KLT-04-CYB",
     fit: "Oversized",
@@ -70,19 +70,14 @@ const PRODUCTOS_COLECCION = [
   },
 ];
 
-function MainColeccion({ onNavegar }) {
+function MainColeccion() {
   const manejarAgregar = (prenda) => {
     console.log("Agregado:", prenda);
   };
 
   return (
     <>
-      <Header
-        paginaActiva="coleccion"
-        cantidadCarrito="00"
-        totalTexto="$0 COP"
-        onNavegar={onNavegar}
-      />
+      <Header cantidadCarrito="00" totalTexto="$0 COP" />
 
       <section className="phead" id="catalogo">
         <div className="wrap">
@@ -215,7 +210,7 @@ function MainColeccion({ onNavegar }) {
         </div>
       </div>
 
-      <FooterTienda onNavegar={onNavegar} />
+      <FooterTienda />
     </>
   );
 }

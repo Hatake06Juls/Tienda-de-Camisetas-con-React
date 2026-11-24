@@ -1,13 +1,15 @@
+import { Link } from "react-router-dom";
+
 function FooterTienda() {
   return (
     <footer className="site">
       <div className="wrap">
         <div className="fgrid">
           <div>
-            <a className="brand" href="#top">
+            <Link className="brand" to="/">
               <b style={{ font: "800 1.2rem var(--display)" }}>KULT</b>
               <small>Studio</small>
-            </a>
+            </Link>
             <p>
               Operando en la intersección del brutalismo subcultural, manipulación de serigrafía de alta
               densidad y cortes arquitectónicos pesados.
@@ -22,19 +24,19 @@ function FooterTienda() {
             <h4>Catálogo</h4>
             <ul>
               <li>
-                <a href="#catalogo">Todas las prendas</a>
+                <Link to="/coleccion">Todas las prendas</Link>
               </li>
               <li>
-                <a href="#catalogo">Nuevos lanzamientos</a>
+                <Link to="/coleccion">Nuevos lanzamientos</Link>
               </li>
               <li>
-                <a href="#catalogo">Gráficos pesados</a>
+                <Link to="/coleccion">Gráficos pesados</Link>
               </li>
               <li>
-                <a href="#catalogo">Boxy &amp; Oversized</a>
+                <Link to="/coleccion">Boxy &amp; Oversized</Link>
               </li>
               <li>
-                <a href="#catalogo">Colección Permanente</a>
+                <Link to="/coleccion">Colección Permanente</Link>
               </li>
             </ul>
           </div>
@@ -43,19 +45,19 @@ function FooterTienda() {
             <h4>Atención al Cliente</h4>
             <ul>
               <li>
-                <a href="#contacto">Soporte y Contacto</a>
+                <Link to="/contacto">Soporte y Contacto</Link>
               </li>
               <li>
-                <a href="#login">Rastreo de envíos</a>
+                <Link to="/login">Rastreo de envíos</Link>
               </li>
               <li>
-                <a href="#catalogo">Guía de tallas</a>
+                <Link to="/coleccion">Guía de tallas</Link>
               </li>
               <li>
-                <a href="#contacto">Envíos nacionales</a>
+                <Link to="/contacto">Envíos nacionales</Link>
               </li>
               <li>
-                <a href="#registro">Membresía privada</a>
+                <Link to="/registro">Membresía privada</Link>
               </li>
             </ul>
           </div>
@@ -64,22 +66,22 @@ function FooterTienda() {
             <h4>Red Oficial</h4>
             <ul id="lista">
               <li>
-                <a href="#top">
+                <a href="https://instagram.com" target="_blank" rel="noreferrer">
                   INSTAGRAM <span>[EXT]</span>
                 </a>
               </li>
               <li>
-                <a href="#top">
+                <a href="https://discord.com" target="_blank" rel="noreferrer">
                   DISCORD ARCHIVE <span>[EXT]</span>
                 </a>
               </li>
               <li>
-                <a href="#top">
+                <a href="https://spotify.com" target="_blank" rel="noreferrer">
                   SPOTIFY TRANSMISSIONS <span>[EXT]</span>
                 </a>
               </li>
               <li>
-                <a href="#contacto">Sede Bogotá // Medellín</a>
+                <Link to="/contacto">Sede Bogotá // Medellín</Link>
               </li>
             </ul>
           </div>

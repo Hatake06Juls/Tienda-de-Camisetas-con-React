@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 
 function MainLogin() {
   return (
@@ -115,9 +116,9 @@ function MainLogin() {
                 <div className="lrow">
                   <label htmlFor="pw">Contraseña cifrada</label>
                   <small>
-                    <a href="recuperar.html" style={{ color: "var(--lime)" }}>
+                    <Link to="/recuperar" style={{ color: "var(--lime)" }}>
                       ¿Olvidaste tu contraseña? [Recuperar clave]
-                    </a>
+                    </Link>
                   </small>
                 </div>
                 <div className="field">
@@ -210,7 +211,7 @@ function MainLogin() {
                 <span>¿Aún no tienes identificador?</span>
                 Apertura de fichas sujeta a disponibilidad de cupos en Colombia.
               </p>
-              <a href="registro.html">[Crear cuenta nueva]</a>
+              <Link to="/registro">[Crear cuenta nueva]</Link>
             </div>
           </section>
         </div>

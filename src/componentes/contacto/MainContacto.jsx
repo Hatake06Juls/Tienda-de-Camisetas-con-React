@@ -4,7 +4,7 @@ import "./Contacto.css";
 import Header from "../Header";
 import FooterTienda from "../FooterTienda";
 
-function MainContacto({ onNavegar }) {
+function MainContacto() {
   const [formulario, setFormulario] = useState({
     nombre: "",
     correo: "",
@@ -34,12 +34,7 @@ function MainContacto({ onNavegar }) {
 
   return (
     <>
-      <Header
-        paginaActiva="contacto"
-        cantidadCarrito="00"
-        totalTexto="$0 COP"
-        onNavegar={onNavegar}
-      />
+      <Header cantidadCarrito="00" totalTexto="$0 COP" />
 
       <section className="phead" id="contacto">
         <div className="wrap">
@@ -168,7 +163,7 @@ function MainContacto({ onNavegar }) {
         </div>
       </main>
 
-      <FooterTienda onNavegar={onNavegar} />
+      <FooterTienda />
     </>
   );
 }

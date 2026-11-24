@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 function MainRecuperar() {
   return (
     <>
@@ -85,7 +87,7 @@ function MainRecuperar() {
               </svg>
               <span>Enlace seguro con expiración automática de 15 minutos</span>
             </p>
-            <a href="login.html">¿Recordaste tu clave? [Volver a iniciar sesión]</a>
+            <Link to="/login">¿Recordaste tu clave? [Volver a iniciar sesión]</Link>
           </div>
         </section>
       </main>

@@ -28,7 +28,7 @@ const DESTACADOS_HOME = [
     badge: "Limitado",
     badgeClass: "ltd",
     gsm: "280 GSM",
-    img: "/img/img 2 def leppard.jpg", // <-- Usa aquí el nombre exacto con el que te cargó la foto
+    img: "/img/img 2 def leppard.jpg",
     alt: "Camiseta Def Leppard",
     sku: "SKU: KLT-04-CYB",
     fit: "Oversized",
@@ -55,19 +55,14 @@ const DESTACADOS_HOME = [
   },
 ];
 
-function MainHome({ onNavegar }) {
+function MainHome() {
   const manejarAgregar = (prenda) => {
     console.log("Agregado desde Home:", prenda);
   };
 
   return (
     <>
-      <Header
-        paginaActiva="inicio"
-        cantidadCarrito="00"
-        totalTexto="$0 COP"
-        onNavegar={onNavegar}
-      />
+      <Header cantidadCarrito="00" totalTexto="$0 COP" />
 
       <section className="hero" id="top">
         <div className="wrap hero-grid">
@@ -144,7 +139,7 @@ function MainHome({ onNavegar }) {
         </div>
       </section>
 
-      <FooterTienda onNavegar={onNavegar} />
+      <FooterTienda />
     </>
   );
 }

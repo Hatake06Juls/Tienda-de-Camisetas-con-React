@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 function MainRegistro() {
   return (
     <>
@@ -232,11 +234,11 @@ function MainRegistro() {
                 <input type="checkbox" required />
                 <span>
                   Acepto los{" "}
-                  <a href="#" style={{ textDecoration: "underline" }}>
+                  <a href="#terminos" style={{ textDecoration: "underline" }}>
                     Términos de Servicio
                   </a>{" "}
                   y la{" "}
-                  <a href="#" style={{ textDecoration: "underline" }}>
+                  <a href="#privacidad" style={{ textDecoration: "underline" }}>
                     Política de Privacidad
                   </a>{" "}
                   de KULT STUDIO Colombia.
@@ -290,9 +292,9 @@ function MainRegistro() {
                 }}
               >
                 ¿Ya posees identificador de acceso?{" "}
-                <a href="login.html" style={{ color: "var(--lime)", fontWeight: 700 }}>
+                <Link to="/login" style={{ color: "var(--lime)", fontWeight: 700 }}>
                   [Iniciar sesión aquí]
-                </a>
+                </Link>
               </p>
             </form>
           </section>

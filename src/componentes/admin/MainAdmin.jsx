@@ -5,7 +5,6 @@ import Header from "../Header";
 import FooterTienda from "../FooterTienda";
 import api from "../../servicios/api";
 
-
 const FORMULARIO_INICIAL = {
   nombre: "",
   precio: "",
@@ -25,7 +24,7 @@ function MainAdmin() {
   const [productos, setProductos] = useState([]);
   const [form, setForm] = useState(FORMULARIO_INICIAL);
   const [editandoId, setEditandoId] = useState(null);
-const [mensaje, setMensaje] = useState("");
+  const [mensaje, setMensaje] = useState("");
   const [cargando, setCargando] = useState(true);
 
   // 1. CONSULTA (READ -> GET /api/productos)
@@ -71,14 +70,27 @@ const [mensaje, setMensaje] = useState("");
     const { name, value } = e.target;
     setForm((prev) => ({ ...prev, [name]: value }));
   };
-  
+
+  // Convierte una imagen para guardarla y previsualizarla
+  const manejarArchivoImagen = (e) => {
+    const archivo = e.target.files?.[0];
+    if (!archivo) return;
+
+    const lector = new FileReader();
+    lector.onloadend = () => {
+      setForm((prev) => ({ ...prev, img: lector.result }));
+    };
+    lector.readAsDataURL(archivo);
+  };
+
+  // 2. CREACIÓN (POST) y 3. ACTUALIZACIÓN (PUT)
   const manejarSubmit = async (e) => {
     e.preventDefault();
     if (!form.nombre.trim() || !form.precio) {
       setMensaje("Por favor completa el nombre y el precio de la prenda.");
       return;
     }
-  
+
     const payload = {
       nombre: form.nombre.trim(),
       precio: Number(form.precio),
@@ -90,7 +102,7 @@ const [mensaje, setMensaje] = useState("");
       tallasDisp: form.tallas.replaceAll(",", " "),
       badge: form.badge,
       badgeClass: form.badgeClass,
-      img: form.img,
+      img: form.img || "/img/img 1 acdc.jpg",
       alt: form.nombre.trim(),
       categoria: {
         id_categoria: Number(form.id_categoria),
@@ -105,7 +117,7 @@ const [mensaje, setMensaje] = useState("");
         await api.post("/productos", payload);
         setMensaje("Nuevo producto creado y guardado en MySQL.");
       }
-   
+
       setForm(FORMULARIO_INICIAL);
       setEditandoId(null);
       cargarProductos();
@@ -141,6 +153,7 @@ const [mensaje, setMensaje] = useState("");
     setMensaje("");
   };
 
+  // 4. ELIMINACIÓN (DELETE)
   const manejarEliminar = async (id, nombre) => {
     const confirmar = window.confirm(
       `¿Seguro que deseas eliminar "${nombre}" (ID #${id}) de MySQL?`
@@ -179,6 +192,7 @@ const [mensaje, setMensaje] = useState("");
       </section>
 
       <main className="wrap" style={{ padding: "32px 20px", maxWidth: "1200px", margin: "0 auto" }}>
+        
         <form
           onSubmit={manejarSubmit}
           style={{
@@ -280,16 +294,51 @@ const [mensaje, setMensaje] = useState("");
               />
             </div>
 
+            {/* SUBIR IMAGEN DESDE EL COMPUTADOR */}
             <div className="f">
-              <label htmlFor="adm-img">Imagen del catálogo</label>
-              <select id="adm-img" name="img" value={form.img} onChange={manejarCambio}>
-                <option value="/img/img 1 acdc.jpg">Diseño 01 (ACDC)</option>
-                <option value="/img/img 2 def leppard.jpg">Diseño 02 (Def Leppard)</option>
-                <option value="/img/img 3 alice in chains.jpg">Diseño 03 (Alice in Chains)</option>
-                <option value="/img/img 4 nirvana.jpg">Diseño 04 (Nirvana)</option>
-              </select>
+              <label htmlFor="adm-file">Subir imagen (JPG / PNG / WEBP)</label>
+              <input
+                id="adm-file"
+                type="file"
+                accept="image/*"
+                onChange={manejarArchivoImagen}
+                style={{ padding: "8px", cursor: "pointer" }}
+              />
+            </div>
+
+            
+            <div className="f">
+              <label htmlFor="adm-img-url">O ruta / URL de imagen</label>
+              <input
+                id="adm-img-url"
+                name="img"
+                type="text"
+                placeholder="/img/camiseta.jpg o https://..."
+                value={form.img.startsWith("data:image") ? "Imagen local cargada ✓" : form.img}
+                onChange={manejarCambio}
+                disabled={form.img.startsWith("data:image")}
+              />
             </div>
           </div>
+
+          
+          {form.img && (
+            <div style={{ display: "flex", alignItems: "center", gap: "14px" }}>
+              <img
+                src={form.img}
+                alt="Vista previa"
+                style={{
+                  width: "64px",
+                  height: "64px",
+                  objectFit: "cover",
+                  border: "1px solid var(--lime)",
+                }}
+              />
+              <span className="mono" style={{ fontSize: ".75rem", color: "var(--muted)" }}>
+                Vista previa de la prenda que se guardará en MySQL
+              </span>
+            </div>
+          )}
 
           <div style={{ display: "flex", alignItems: "center", gap: "16px", flexWrap: "wrap" }}>
             <button type="submit" className="btn lime">
@@ -304,6 +353,7 @@ const [mensaje, setMensaje] = useState("");
           </div>
         </form>
 
+        
         <div
           style={{
             background: "var(--panel)",
@@ -323,16 +373,16 @@ const [mensaje, setMensaje] = useState("");
             <h2 style={{ fontSize: "1.1rem" }}>
               Inventario Sincronizado en MySQL (GET / PUT / DELETE)
             </h2>
-                <button
-                type="button"
-                className="btn dark"
-                onClick={() => {
-                    setCargando(true);
-                    cargarProductos();
-                }}
-                >
-                Refrescar tabla
-                </button>
+            <button
+              type="button"
+              className="btn dark"
+              onClick={() => {
+                setCargando(true);
+                cargarProductos();
+              }}
+            >
+              Refrescar tabla
+            </button>
           </div>
 
           {cargando ? (
@@ -349,6 +399,7 @@ const [mensaje, setMensaje] = useState("");
                   className="mono"
                 >
                   <th style={{ padding: "10px" }}>ID</th>
+                  <th style={{ padding: "10px" }}>Img</th>
                   <th style={{ padding: "10px" }}>Prenda</th>
                   <th style={{ padding: "10px" }}>Categoría</th>
                   <th style={{ padding: "10px" }}>Color</th>
@@ -362,6 +413,18 @@ const [mensaje, setMensaje] = useState("");
                   <tr key={prod.id_producto} style={{ borderBottom: "1px solid var(--line)" }}>
                     <td className="mono" style={{ padding: "12px 10px", color: "var(--lime)" }}>
                       #{prod.id_producto}
+                    </td>
+                    <td style={{ padding: "12px 10px" }}>
+                      <img
+                        src={prod.img || "/img/img 1 acdc.jpg"}
+                        alt={prod.nombre}
+                        style={{
+                          width: "42px",
+                          height: "42px",
+                          objectFit: "cover",
+                          border: "1px solid var(--line)",
+                        }}
+                      />
                     </td>
                     <td style={{ padding: "12px 10px", fontWeight: 600 }}>{prod.nombre}</td>
                     <td className="mono" style={{ padding: "12px 10px", fontSize: ".8rem" }}>
